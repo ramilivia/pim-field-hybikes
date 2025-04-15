@@ -1,56 +1,27 @@
-import { useApp, Wrapper } from "@graphcms/app-sdk-react";
-import { Box, Button, Text, Heading, Stack } from "@hygraph/baukasten";
+import { useFieldExtension, Wrapper, useApp } from "@hygraph/app-sdk-react";
+import { Button } from "@hygraph/baukasten";
+// Add this at the top of your custom-field.tsx file
 
-function SetupElement() {
-    const { installation } = useApp();
-    if (installation.status === "COMPLETED") {
-        return <Configure />;
+
+
+export default function TenantFieldPage() {
+;
+    const { updateInstallation, installation } = useApp();
+    
+    const onInstallApp = () => {
+        updateInstallation({
+            status: 'COMPLETED',
+            config: {}
+        });
     }
-    return <Install />;
-}
 
-function Install() {
-    const { updateInstallation } = useApp();
     return (
-        <Stack gap="12">
-            <Box>
-                <Heading>Hygraph Boilerplate App</Heading>
-                <Text>This is an example app</Text>
-                <Button
-                    onClick={() =>
-                        updateInstallation({ status: "COMPLETED", config: {} })
-                    }
-                >
-                    Install App
-                </Button>
-            </Box>
-        </Stack>
-    );
-}
-
-function Configure() {
-    const { updateInstallation } = useApp();
-    return (
-        <Stack gap="12">
-            <Box>
-                <Heading>Hygraph Boilerplate App</Heading>
-                <Text>This is an example app</Text>
-                <Button
-                    onClick={() =>
-                        updateInstallation({ status: "COMPLETED", config: {} })
-                    }
-                >
-                    Save
-                </Button>
-            </Box>
-        </Stack>
-    );
-}
-
-export default function Setup() {
-    return (
-        <Wrapper>
-            <SetupElement />
-        </Wrapper>
+        <div>
+            { installation.status !== 'COMPLETED' ? 
+                <Button onClick={onInstallApp}>Install App</Button>
+            : 
+                <p>App installed</p>
+            }
+        </div>
     );
 }
