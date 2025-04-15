@@ -1,8 +1,8 @@
 import { getItems } from "../utils";
 
-const BikesQueryHygraph = `
+const BikesQueryHygraph = (userGroup: string) => `
   query Bikes {
-    hygraphBikesRemoteSource {
+    hygraphBikesRemoteSource(userGroup: "${userGroup}") {
       id
       sku
       name
@@ -21,8 +21,8 @@ const BikeQueryHygraphConverter = (bike: any) => (
   }
 );
 
-export const fetchBikesHygraph = async (context: any) => {
-  const response = await getItems(context.environment.endpoint, context.environment.authToken, BikesQueryHygraph);
+export const fetchBikesHygraph = async (context: any, userGroup: string) => {
+  const response = await getItems(context.environment.endpoint, context.environment.authToken, BikesQueryHygraph(userGroup));
   const { data: { hygraphBikesRemoteSource } } = await response.json();
   const bikes = hygraphBikesRemoteSource.map(BikeQueryHygraphConverter);
   return bikes;
@@ -36,6 +36,7 @@ const BikeQueryHygraph = (bikeId: string) => `
       images {
         url
       }
+    userGroup
     }
   }
 `;

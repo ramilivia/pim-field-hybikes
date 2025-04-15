@@ -9,7 +9,9 @@ const Dialog = () => {
     const [bikes, setBikes] = useState([]);
     const { onCloseDialog, model }: { onCloseDialog: any, model: any } = useUiExtensionDialog();
     const { context } = useFieldExtension();
-    
+
+    const userGroups = [{ label: 'OEM', value: 'oem' }, { label: 'Dealer', value: 'dealer' }]
+    const [selectedGroup, setSelectedGroup] = useState('oem');
 
     const onClose = (bike?: any) => {
 
@@ -20,32 +22,51 @@ const Dialog = () => {
         const loadBikes = async () => {
             let bikes = [];
             if (model.apiIdPlural === 'BikesDataHygraph') {
-                bikes = await fetchBikesHygraph(context);
+                bikes = await fetchBikesHygraph(context, selectedGroup);
             } else {
-                bikes = await fetchBikesMockapi(context);
+                bikes = await fetchBikesMockapi(context, selectedGroup);
             }
-            
+
             setBikes(bikes);
         };
         loadBikes();
-    }, [context]);
-
+    }, [context, selectedGroup]);
+    
     return (
         <Box>
             <DialogHeader>
-                <Flex justifyContent="space-between">
+                <Flex justifyContent="space-between" alignItems="center">
                     <Heading as="h4">Choose a bike from External Source</Heading>
-                    <Button onClick={() => onClose()}>Close</Button>
+                    <Flex gap="3">
+                        <Box>
+                            <select
+                                value={selectedGroup}
+                                onChange={(e) => setSelectedGroup(e.target.value)}
+                                style={{
+                                    padding: '8px',
+                                    borderRadius: '4px',
+                                    border: '1px solid #ccc'
+                                }}
+                            >
+                                {userGroups.map((group) => (
+                                    <option key={group.value} value={group.value}>
+                                        {group.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </Box>
+                        <Button marginLeft="20px" onClick={() => onClose()}>Close</Button>
+                    </Flex>
                 </Flex>
             </DialogHeader>
-            <DialogContent  height="600px" overflow="auto">
+            <DialogContent height="600px" overflow="auto">
                 <Grid gridTemplateColumns="repeat(3, 1fr)" gap="15">
-                {bikes.map((bike: any) => (
-                    <Flex key={bike.id} height="300px" justifyContent="center" alignItems="center" flexDirection="column">
-                        <Text>{bike.name}</Text>
-                        <Image src={bike.image} alt={bike.name}  height="200px" cursor="pointer" onClick={() => onClose(bike)}/>
-                    </Flex>
-                ))}
+                    {bikes.map((bike: any) => (
+                        <Flex key={bike.id} height="300px" justifyContent="center" alignItems="center" flexDirection="column">
+                            <Text>{bike.name}</Text>
+                            <Image src={bike.image} alt={bike.name} height="200px" cursor="pointer" onClick={() => onClose(bike)} />
+                        </Flex>
+                    ))}
                 </Grid>
             </DialogContent>
             <DialogFooter>
@@ -55,7 +76,7 @@ const Dialog = () => {
     );
 };
 
-const Wrapped = () => (  
+const Wrapped = () => (
     <Dialog />
 );
 

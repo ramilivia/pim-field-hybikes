@@ -1,17 +1,18 @@
 import { getItems } from "../utils";
 
-const BikesQueryMockapi = `
+const BikesQueryMockapi = (userGroup: string) => `
   query Bikes {
-    mockapiBikesRemoteSource {
+    mockapiBikesRemoteSource(userGroup: "${userGroup}") {
       id
       name
       image
+      userGroup
     }
   }
 `;
 
-export const fetchBikesMockapi = async (context: any) => {
-  const response = await getItems(context.environment.endpoint, context.environment.authToken, BikesQueryMockapi);
+export const fetchBikesMockapi = async (context: any, userGroup: string) => {
+  const response = await getItems(context.environment.endpoint, context.environment.authToken, BikesQueryMockapi(userGroup));
   const { data: { mockapiBikesRemoteSource } } = await response.json();
   return mockapiBikesRemoteSource;
 };
@@ -22,6 +23,7 @@ const BikeQueryMockapi = (bikeId: string) => `
         id
         image
         name
+        userGroup
       }
     }
 `;
