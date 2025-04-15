@@ -1,19 +1,6 @@
-import { useFieldExtension, useUiExtensionDialog, Wrapper, useApp } from "@hygraph/app-sdk-react";
+import { useFieldExtension } from "@hygraph/app-sdk-react";
 import { useState, useEffect } from "react";
-import { getItems } from "../lib/utils";
-import {
-    Box,
-    Dialog,
-    DialogHeader,
-    DialogContent,
-    DialogFooter,
-    Button,
-    OverlayProvider,
-    Text,
-    Input,
-    Flex,
-    Image
-} from '@hygraph/baukasten';
+import { Box, Button, Input, Flex, Image } from '@hygraph/baukasten';
 import { fetchBikeMockapi } from "../lib/queries/pim-mockapi";
 import { fetchBikeHygraph } from "../lib/queries/pim-hygraph";
 export default function PimFieldPage() {
@@ -21,11 +8,6 @@ export default function PimFieldPage() {
     const { value, onChange, context, field, form, openDialog, installation, model } = useFieldExtension();
     const [bike, setBike] = useState({ id: '', name: '', image: '' } as any);
 
-    console.log('CONTEXT: ', context);
-    console.log('FIELD: ', field);
-    console.log('FORM: ', form);
-    console.log('INSTALLATION: ', installation);
-    console.log('MODEL: ', model);
     const onClick = async () => {
         const dialogOutput = await openDialog(
             "/dialog",
@@ -44,7 +26,6 @@ export default function PimFieldPage() {
 
     useEffect(() => {
         const fetchBike = async () => {
-            
             if (value) {
                 let response = {};
                 if (model.apiIdPlural === 'BikesDataHygraph') {
@@ -52,7 +33,6 @@ export default function PimFieldPage() {
                 } else {
                     response = await fetchBikeMockapi(context, value);
                 }
-                 
                 setBike(response);
             }
         };
@@ -72,6 +52,5 @@ export default function PimFieldPage() {
                 <Button onClick={onClick}>Select Bike</Button>
             </Flex>
         </Box>
-
     );
 }

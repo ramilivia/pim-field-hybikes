@@ -1,9 +1,4 @@
-import {
-    FieldExtensionProps,
-    useFieldExtension,
-    useUiExtensionDialog,
-    Wrapper,
-  } from "@hygraph/app-sdk-react";
+import { useFieldExtension, useUiExtensionDialog } from "@hygraph/app-sdk-react";
 import { Box, Button, DialogContent, DialogFooter, DialogHeader, Flex, Grid, Heading, Text, Image } from "@hygraph/baukasten";
 import { useState, useEffect } from "react";
 import { fetchBikesMockapi } from "../lib/queries/pim-mockapi";
@@ -60,10 +55,8 @@ const Dialog = () => {
     );
 };
 
-const Wrapped = () => (
-    
-        <Dialog />
-    
+const Wrapped = () => (  
+    <Dialog />
 );
 
 export default Wrapped;
