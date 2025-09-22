@@ -6,6 +6,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'eu-central-1-staging.graphassets.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.graphassets.com',
+      },
+      {
+        protocol: 'https',
         hostname: '**',
       },
       {
