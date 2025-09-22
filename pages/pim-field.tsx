@@ -53,6 +53,10 @@ export default function PimFieldPage() {
                 } finally {
                     setIsLoading(false);
                 }
+            } else {
+                // Reset bike state when value is cleared
+                setBike({ id: '', model_name: '', image_url: '', battery_range_km: '', price: '' });
+                setIsLoading(false);
             }
         };
 
