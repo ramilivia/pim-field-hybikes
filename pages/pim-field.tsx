@@ -4,10 +4,24 @@ import { Box, Button, Input, Flex } from '@hygraph/baukasten';
 import { getItem } from "../lib/utils";
 import Image from "next/image";
 import BikeLogoIcon from "../components/BikeLogoIcon";
+
+// Spinner component matching the dialog's animation
+const Spinner = ({ size = 24 }: { size?: number }) => (
+    <Box style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        border: '2px solid #e2e8f0',
+        borderTop: '2px solid #3b82f6',
+        borderRadius: '50%',
+        animation: 'spin 1s linear infinite'
+    }} />
+);
+
 export default function PimFieldPage() {
 
     const { value, onChange, context, field, form, openDialog, installation, model } = useFieldExtension();
     const [bike, setBike] = useState({ id: '', model_name: '', image_url: '', battery_range_km: '', price: '' } as any);
+    const [isLoading, setIsLoading] = useState(false);
 
     const onClick = async () => {
         const dialogOutput = await openDialog(
@@ -28,6 +42,7 @@ export default function PimFieldPage() {
     useEffect(() => {
         const fetchBike = async () => {
             if (value) {
+                setIsLoading(true);
                 try {
                     const response = await getItem(value);
                     setBike(response);
@@ -35,6 +50,8 @@ export default function PimFieldPage() {
                     console.error('Error fetching bike:', error);
                     // Reset bike state on error
                     setBike({ id: '', model_name: '', image_url: '', battery_range_km: '', price: '' });
+                } finally {
+                    setIsLoading(false);
                 }
             }
         };
@@ -92,6 +109,8 @@ export default function PimFieldPage() {
                             height: '100%'
                         }}
                     />
+                ) : isLoading && value ? (
+                    <Spinner size={32} />
                 ) : (
                     <BikeLogoIcon 
                         size={56} 
