@@ -217,37 +217,110 @@ const Dialog = () => {
                 </Flex>
             </DialogHeader>
             <DialogContent height="550px" overflow="auto" style={{ backgroundColor: '#f8f9fa', padding: '20px' }}>
-                <Grid gridTemplateColumns="repeat(4, 1fr)" gap="12">
+                <Grid gridTemplateColumns="repeat(3, 1fr)" gap="16">
+                    
                     {bikes.map((bike: any) => (
+                       
                         <Flex
                             key={bike.id}
-                            height="250px"
+                            height="320px"
                             justifyContent="center"
                             alignItems="center"
                             flexDirection="column"
                             style={{
-                                transition: 'border 0.2s ease',
+                                transition: 'border 0.2s ease, transform 0.2s ease',
                                 cursor: 'pointer',
                                 border: '2px solid transparent',
-                                borderRadius: '8px',
-                                padding: '2px',
-                                minHeight: '250px',
-                                maxHeight: '250px',
+                                borderRadius: '12px',
+                                padding: '8px',
+                                minHeight: '320px',
+                                maxHeight: '320px',
                                 overflow: 'hidden',
-                                position: 'relative'
+                                position: 'relative',
+                                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)'
                             }}
                             onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
                                 e.currentTarget.style.border = '2px solid rgb(3, 152, 253)';
+                                e.currentTarget.style.transform = 'translateY(-2px)';
+                                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
                             }}
                             onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
                                 e.currentTarget.style.border = '2px solid transparent';
+                                e.currentTarget.style.transform = 'translateY(0px)';
+                                e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
                             }}
                             onClick={() => onClose(bike)}
                         >
-                            <AssetImage
-                                src={bike.image}
-                                alt={bike.name}
-                            />
+                            {/* Full Image Container with Overlay Text */}
+                            {console.log(bike)}
+                            <Box style={{ 
+                                height: '304px',
+                                width: '100%',
+                                borderRadius: '8px',
+                                overflow: 'hidden',
+                                position: 'relative'
+                            }}>
+                                <AssetImage
+                                    src={bike.image_url}
+                                    alt={bike.model_name}
+                                />
+                                
+                                {/* Text Overlay */}
+                                <Box style={{
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    background: 'linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.2) 40%, transparent 100%)',
+                                    padding: '6px 12px 6px 12px',
+                                    color: 'white',
+                                    zIndex: 10
+                                }}>
+                                    {/* Model Name */}
+                                    <Text style={{
+                                        fontSize: '18px',
+                                        fontWeight: '700',
+                                        color: '#ffffff',
+                                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        lineHeight: '0.9',
+                                        marginBottom: '0px',
+                                        textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)',
+                                        display: 'block'
+                                    }}>
+                                        {bike.model_name}
+                                    </Text>
+                                    
+                                    <Flex justifyContent="space-between" alignItems="center" style={{ lineHeight: '0.9' }}>
+                                        {/* Battery Range */}
+                                        <Text style={{
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            color: '#ffffff',
+                                            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                                            textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)',
+                                            lineHeight: '0.9'
+                                        }}>
+                                            Range: {bike.battery_range_km}
+                                        </Text>
+                                        
+                                        {/* Price */}
+                                        <Text style={{
+                                            fontSize: '18px',
+                                            fontWeight: '800',
+                                            color: '#ffffff',
+                                            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                                            textShadow: '0 1px 2px rgba(0, 0, 0, 0.6)',
+                                            lineHeight: '0.9'
+                                        }}>
+                                            {bike.price}
+                                        </Text>
+                                    </Flex>
+                                </Box>
+                            </Box>
                         </Flex>
                     ))}
                 </Grid>
