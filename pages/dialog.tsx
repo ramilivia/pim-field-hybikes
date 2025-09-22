@@ -181,7 +181,10 @@ const Dialog = () => {
                         <BikeLogoIcon 
                             size={56} 
                             style={{ 
-                                marginRight: '12px'
+                                marginRight: '12px',
+                                backgroundColor: 'transparent',
+                                boxShadow: 'none',
+                                opacity: 0.7
                             }} 
                         />
                         <Box>
